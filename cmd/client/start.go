@@ -1,8 +1,8 @@
 package client
 
 import (
+	"github.com/QQGoblin/device-watcher/pkg/grpc"
 	"github.com/spf13/cobra"
-	"lqingcloud.cn/device-watcher/pkg/grpc"
 )
 
 func NewCmdStart() *cobra.Command {

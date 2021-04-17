@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/QQGoblin/device-watcher/cmd/client"
+	dwlogger "github.com/QQGoblin/device-watcher/pkg/logs"
+	"github.com/QQGoblin/device-watcher/pkg/version"
 	"github.com/spf13/cobra"
 	"k8s.io/klog"
-	"lqingcloud.cn/device-watcher/cmd/client"
-	dwlogger "lqingcloud.cn/device-watcher/pkg/logs"
-	"lqingcloud.cn/device-watcher/pkg/version"
 	"os"
 )
 

@@ -1,4 +1,4 @@
-module lqingcloud.cn/device-watcher
+module github.com/QQGoblin/device-watcher
 
 go 1.15
 
