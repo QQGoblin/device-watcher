@@ -22,23 +22,20 @@ const (
 	DefaultAddress = IP + ":" + Port
 )
 
-// Address represents the address given by user
-var Address = ""
-
 func Start() {
 	grpcServer := grpc.NewServer()
 
 	reflection.Register(grpcServer)
 	RegisterScannerServer(grpcServer, &Scanner{})
 
-	l, err := net.Listen("tcp", Address)
+	l, err := net.Listen("tcp", DefaultAddress)
 	if err != nil {
 		klog.Errorf("Unable to listen %v", err)
 		os.Exit(1)
 	}
 
 	// Listen for requests
-	klog.Infof("Starting server at : %v ", Address)
+	klog.Infof("Starting server at : %v ", DefaultAddress)
 	grpcServer.Serve(l)
 
 }
@@ -53,7 +50,7 @@ func (*Scanner) ScanNicDevice(context.Context, *Null) (*NicDevices, error) {
 
 	nics, err := ghw.Network()
 	if err != nil {
-		klog.Error("Error getting network info: %v", err)
+		klog.Errorf("Error getting network info: %v", err)
 		return nil, status.Errorf(codes.Canceled, "Error getting network info ")
 	}
 
@@ -69,7 +66,7 @@ func (*Scanner) ScanNicDevice(context.Context, *Null) (*NicDevices, error) {
 			Ipaddress:  make([]string, 0),
 		}
 		if intf, err := net.InterfaceByName(nic.Name); err != nil {
-			klog.Error("Error getting interface %s msg ", intf.Name)
+			klog.Errorf("Error getting interface %s msg ", intf.Name)
 			continue
 		} else {
 			addrs, _ := intf.Addrs()

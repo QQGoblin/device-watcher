@@ -13,7 +13,7 @@ VERSION_METADATA=unreleased
 # Clear the "unreleased" string in BuildMetadata
 if [[ -n $GIT_TAG ]]
 then
-  VERSION_METADATA=dev-${GIT_SHA}
+  VERSION_METADATA=dev-$(date "+%Y%m%d")-${GIT_SHA}
 fi
 
 LDFLAGS="-X github.com/QQGoblin/device-watcher/pkg/version.Version=${VERSION_METADATA}
@@ -22,5 +22,5 @@ LDFLAGS="-X github.com/QQGoblin/device-watcher/pkg/version.Version=${VERSION_MET
 
 GO111MODULE=on
 GOPROXY=https://goproxy.cn
-go build -ldflags "$LDFLAGS" -v -o output/kk
+go build -ldflags "$LDFLAGS" -v -o output/dw cmd/main.go
 

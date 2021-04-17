@@ -37,7 +37,7 @@ func run() error {
 }
 
 func welcome() {
-	klog.Info("Starting device watcher client...")
-	klog.Info("Version Tag : %s", version.GetVersion())
-	klog.Info("GitCommint : %s", version.GetGitCommit())
+	klog.Infof("Starting device watcher ...")
+	klog.Infof("Version Tag : %s", version.GetVersion())
+	klog.Infof("GitCommint : %s", version.GetGitCommit())
 }
