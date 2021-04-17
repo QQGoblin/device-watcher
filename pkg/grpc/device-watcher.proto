@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package device_watcher;
+
+option go_package = "pkg/grpc";
+
+
+service Scanner {
+
+  rpc ScanNicDevice(Null) returns (NicDevices);
+  rpc ScanBlockDevice(Null) returns (BlockDevices);
+
+}
+
+message NicDevice {
+  string DeviceName = 1;
+  string MacAddress = 2;
+  repeated string Ipaddress = 3 ;
+  enum DeviceStatus {
+    UP = 0;
+    Down = 1;
+  }
+  DeviceStatus Status = 5;
+}
+
+
+
+message BlockDevice {
+}
+
+message NicDevices {
+  repeated NicDevice nicdevices = 1;
+}
+
+message BlockDevices {
+  repeated BlockDevice blockdevices = 1;
+}
+
+message Null {
+}
