@@ -9,11 +9,11 @@ GIT_TAG=$(git describe --tags --abbrev=0 --exact-match 2>/dev/null )
 
 
 
-VERSION_METADATA=unreleased
+VERSION_METADATA=dev-$(date "+%Y%m%d")-${GIT_SHA}
 # Clear the "unreleased" string in BuildMetadata
 if [[ -n $GIT_TAG ]]
 then
-  VERSION_METADATA=dev-$(date "+%Y%m%d")-${GIT_SHA}
+  VERSION_METADATA=${GIT_TAG}
 fi
 
 LDFLAGS="-X github.com/QQGoblin/device-watcher/pkg/version.Version=${VERSION_METADATA}

@@ -79,8 +79,8 @@ func (*Scanner) ScanNicDevice(context.Context, *Null) (*NicDevices, error) {
 			} else {
 				n.Status = NicDevice_Down
 			}
-
 		}
+		nicDevs = append(nicDevs, &n)
 
 	}
 
