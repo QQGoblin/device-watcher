@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/QQGoblin/device-watcher/cmd/client"
+	"github.com/QQGoblin/device-watcher/cmd/server"
 	dwlogger "github.com/QQGoblin/device-watcher/pkg/logs"
 	"github.com/QQGoblin/device-watcher/pkg/version"
 	"github.com/spf13/cobra"
@@ -30,7 +31,8 @@ func run() error {
 		},
 	}
 	cmd.AddCommand(
-		client.NewCmdStart(),
+		client.NewCmdClientStart(),
+		server.NewCmdServerStart(),
 	)
 
 	return cmd.Execute()

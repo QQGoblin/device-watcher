@@ -22,5 +22,8 @@ LDFLAGS="-X github.com/QQGoblin/device-watcher/pkg/version.Version=${VERSION_MET
 
 GO111MODULE=on
 GOPROXY=https://goproxy.cn
+BUILD_GOOS=${GOOS:-linux}
+BUILD_GOARCH=${GOARCH:-amd64}
+GOBINARY=${GOBINARY:-go}
 go build -ldflags "$LDFLAGS" -v -o output/dw cmd/main.go
 

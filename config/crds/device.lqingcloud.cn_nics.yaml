@@ -1,0 +1,69 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: (devel)
+  creationTimestamp: null
+  name: nics.device.lqingcloud.cn
+spec:
+  group: device.lqingcloud.cn
+  names:
+    kind: Nic
+    listKind: NicList
+    plural: nics
+    singular: nic
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            deviceName:
+              type: string
+            ipaddress:
+              items:
+                type: string
+              type: array
+            macAddress:
+              type: string
+            node:
+              type: string
+          required:
+          - node
+          type: object
+        status:
+          properties:
+            up:
+              type: boolean
+          required:
+          - up
+          type: object
+      required:
+      - spec
+      - status
+      type: object
+  version: v1beta1
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
