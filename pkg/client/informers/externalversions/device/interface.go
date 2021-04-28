@@ -19,8 +19,8 @@ limitations under the License.
 package device
 
 import (
-	v1beta1 "pkg/client/informers/externalversions/device/v1beta1"
-	internalinterfaces "pkg/client/informers/externalversions/internalinterfaces"
+	v1beta1 "github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions/device/v1beta1"
+	internalinterfaces "github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to each of this group's versions.

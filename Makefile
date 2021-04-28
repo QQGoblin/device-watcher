@@ -68,7 +68,7 @@ generate-client:
 	client-gen --clientset-name versioned \
 	--input-base github.com/QQGoblin/device-watcher/pkg/apis \
 	--input device/v1beta1 \
-	--output-package pkg/client/clientset \
+	--output-package github.com/QQGoblin/device-watcher/pkg/client/clientset \
 	--output-base ./generate_output \
     -h "./hack/boilerplate.go.txt"
 
@@ -80,7 +80,7 @@ generate-client:
 generate-lister:
 	lister-gen \
 	--input-dirs github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1 \
-	--output-package pkg/client/listers \
+	--output-package github.com/QQGoblin/device-watcher/pkg/client/listers \
 	--output-base ./generate_output \
     -h "./hack/boilerplate.go.txt"
 
@@ -94,9 +94,9 @@ generate-lister:
 generate-informer:
 	informer-gen \
 	--input-dirs github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1 \
-	--versioned-clientset-package pkg/client/clientset/versioned \
-	--listers-package pkg/client/listers \
-	--output-package pkg/client/informers \
+	--versioned-clientset-package github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned \
+	--listers-package github.com/QQGoblin/device-watcher/pkg/client/listers \
+	--output-package github.com/QQGoblin/device-watcher/pkg/client/informers \
 	--output-base ./generate_output \
     -h "./hack/boilerplate.go.txt"
 

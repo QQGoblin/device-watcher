@@ -19,13 +19,13 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "pkg/client/clientset/versioned"
-	device "pkg/client/informers/externalversions/device"
-	internalinterfaces "pkg/client/informers/externalversions/internalinterfaces"
 	reflect "reflect"
 	sync "sync"
 	time "time"
 
+	versioned "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned"
+	device "github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions/device"
+	internalinterfaces "github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

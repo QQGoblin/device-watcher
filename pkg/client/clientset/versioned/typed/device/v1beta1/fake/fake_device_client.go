@@ -19,8 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	v1beta1 "pkg/client/clientset/versioned/typed/device/v1beta1"
-
+	v1beta1 "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/typed/device/v1beta1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )

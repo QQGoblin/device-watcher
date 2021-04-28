@@ -19,12 +19,12 @@ limitations under the License.
 package v1beta1
 
 import (
-	versioned "pkg/client/clientset/versioned"
-	internalinterfaces "pkg/client/informers/externalversions/internalinterfaces"
-	v1beta1 "pkg/client/listers/device/v1beta1"
 	time "time"
 
 	devicev1beta1 "github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1"
+	versioned "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions/internalinterfaces"
+	v1beta1 "github.com/QQGoblin/device-watcher/pkg/client/listers/device/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"

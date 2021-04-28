@@ -19,10 +19,10 @@ limitations under the License.
 package v1beta1
 
 import (
-	scheme "pkg/client/clientset/versioned/scheme"
 	"time"
 
 	v1beta1 "github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1"
+	scheme "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"

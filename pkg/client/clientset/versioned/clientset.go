@@ -20,8 +20,8 @@ package versioned
 
 import (
 	"fmt"
-	devicev1beta1 "pkg/client/clientset/versioned/typed/device/v1beta1"
 
+	devicev1beta1 "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/typed/device/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

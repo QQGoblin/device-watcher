@@ -6,7 +6,7 @@ func NewCmdServerStart() *cobra.Command {
 
 	//var target string
 	getCmd := &cobra.Command{
-		Use:   "client",
+		Use:   "server",
 		Short: "start grpc server for this node ",
 		Run: func(cmd *cobra.Command, args []string) {
 		},

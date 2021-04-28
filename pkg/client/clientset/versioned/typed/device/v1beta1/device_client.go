@@ -19,9 +19,8 @@ limitations under the License.
 package v1beta1
 
 import (
-	"pkg/client/clientset/versioned/scheme"
-
 	v1beta1 "github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1"
+	"github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

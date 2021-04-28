@@ -19,10 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "pkg/client/clientset/versioned"
-	devicev1beta1 "pkg/client/clientset/versioned/typed/device/v1beta1"
-	fakedevicev1beta1 "pkg/client/clientset/versioned/typed/device/v1beta1/fake"
-
+	clientset "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned"
+	devicev1beta1 "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/typed/device/v1beta1"
+	fakedevicev1beta1 "github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned/typed/device/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
