@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/QQGoblin/device-watcher/cmd/client"
 	"github.com/QQGoblin/device-watcher/cmd/server"
-	dwlogger "github.com/QQGoblin/device-watcher/pkg/logs"
 	"github.com/QQGoblin/device-watcher/pkg/version"
 	"github.com/spf13/cobra"
 	"k8s.io/klog"
@@ -20,8 +19,8 @@ func main() {
 
 func run() error {
 	//klog.InitFlags(nil)
-	dwlogger.InitLogs()
-	defer dwlogger.FlushLogs()
+	//dwlogger.InitLogs()
+	//defer dwlogger.FlushLogs()
 
 	cmd := &cobra.Command{
 		Use:   "dw",

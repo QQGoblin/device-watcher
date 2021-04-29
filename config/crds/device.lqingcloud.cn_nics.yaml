@@ -8,13 +8,27 @@ metadata:
   creationTimestamp: null
   name: nics.device.lqingcloud.cn
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.deviceName
+    name: Device
+    type: string
+  - JSONPath: .spec.macAddress
+    name: Mac
+    type: string
+  - JSONPath: .spec.node
+    name: Node
+    type: string
+  - JSONPath: .status.up
+    name: Up
+    type: boolean
   group: device.lqingcloud.cn
   names:
     kind: Nic
     listKind: NicList
     plural: nics
     singular: nic
-  scope: Namespaced
+  scope: Cluster
+  subresources: {}
   validation:
     openAPIV3Schema:
       properties:

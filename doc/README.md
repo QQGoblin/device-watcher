@@ -27,4 +27,11 @@ GVKs 或 GVRs 指的是：GroupVersionKind 或 GroupVersionResource，本工程�
 - Group: 通过apis包中的各个doc.go文件的**+groupName**注释指定，即apis包的结构为：apis/<group>/<version>/...
 - Kind: Go Struct对象的名称，对应go文件名称为 xxx_types.go
 
+## 2. Controller 类的结构
+
+参考：github.com/QQGoblin/device-watcher/pkg/controller/nic_controller.go
+
+## 3. 初始化 Controller
+
+
 	

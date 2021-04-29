@@ -1,0 +1,13 @@
+apiVersion: device.lqingcloud.cn/v1beta1
+kind: Nic
+metadata:
+  name: test
+spec:
+  ipaddress:
+    - "192.168.24.33"
+    - "192.168.24.34"
+  deviceName: eth0
+  macAddress: "86:54:4e:df:9e:3f"
+  node: node-test
+status:
+  up: false

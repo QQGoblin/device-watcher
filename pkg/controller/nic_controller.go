@@ -2,10 +2,13 @@ package controller
 
 import (
 	"fmt"
+	"github.com/QQGoblin/device-watcher/pkg/apis/device/v1beta1"
 	"github.com/QQGoblin/device-watcher/pkg/client/clientset/versioned"
 	"github.com/QQGoblin/device-watcher/pkg/client/informers/externalversions"
 	v1beta12 "github.com/QQGoblin/device-watcher/pkg/client/listers/device/v1beta1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
@@ -13,6 +16,10 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog"
 	"time"
+)
+
+const (
+	DeviceFinalizer = "device-finalizer"
 )
 
 type nicController struct {
@@ -33,19 +40,41 @@ func NewNicController(kubeClient kubernetes.Interface, deviceClient versioned.In
 
 	// 构建对应的Informer
 	nicInformer := f.Device().V1beta1().Nics()
-	nicInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
-		AddFunc:    nil,
-		UpdateFunc: nil,
-		DeleteFunc: nil,
-	})
-
-	return &nicController{
+	c := nicController{
 		kubeClient:   kubeClient,
 		deviceClient: deviceClient,
 		nicLister:    nicInformer.Lister(),
 		nicSynced:    nicInformer.Informer().HasSynced, // 这里返回的是函数
 		workqueue:    workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "nic"),
 	}
+	nicInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
+		AddFunc: func(obj interface{}) {
+			c.enqueue(obj)
+		},
+		UpdateFunc: func(oldObj, newObj interface{}) {
+			old := oldObj.(*v1beta1.Nic)
+			new := newObj.(*v1beta1.Nic)
+			if old.ResourceVersion == new.ResourceVersion {
+				return
+			}
+			c.enqueue(newObj)
+		},
+		DeleteFunc: func(obj interface{}) {
+			c.enqueue(obj)
+		},
+	})
+
+	return &c
+}
+
+func (c *nicController) enqueue(obj interface{}) {
+	var key string
+	var err error
+	if key, err = cache.MetaNamespaceKeyFunc(obj); err != nil {
+		utilruntime.HandleError(err)
+		return
+	}
+	c.workqueue.Add(key)
 }
 
 func (c *nicController) Run(stopCh <-chan struct{}) error {
@@ -76,7 +105,6 @@ func (c *nicController) runWorker() {
 func (c *nicController) processNextWorkItem() bool {
 	// workqueue 为空时阻塞
 	obj, shutdown := c.workqueue.Get()
-
 	if shutdown {
 		return false
 	}
@@ -101,7 +129,6 @@ func (c *nicController) processNextWorkItem() bool {
 		}
 		// 处理Key无异常，从工作队列中移除
 		c.workqueue.Forget(obj)
-		klog.Infof("Successfully synced %s:%s", "key", key)
 		return nil
 	}(obj)
 
@@ -114,6 +141,50 @@ func (c *nicController) processNextWorkItem() bool {
 }
 
 func (c *nicController) reconcile(key string) error {
-	klog.Infoln(c.nicLister.Get(key))
+	// 注意以下几点：
+	//  1. 删除时reconcile可以获取到key，但是无法在调协函数中通过lister获取完整的Obj（PS：指没有安装 Finalizer hook 的情况下）
+	//  2. 如果要控制删除流程需要在创建Obect时添加 Finalizer ，处理完成删除逻辑后移除 Finalizer
+	//  3. Controller启动会同步所有obj，进入到工作队列
+	//  4. Controller运行过程中，即使不进行任何操作，obj也会进入工作队列
+
+	nic, err := c.nicLister.Get(key)
+	if err != nil && errors.IsNotFound(err) {
+		klog.Errorf("Obj is not found: %s...", key)
+		return nil
+	}
+	if err != nil {
+		klog.Errorf("Controller get obj failed: %s", err.Error())
+		return err
+	}
+
+	nicFinlizers := sets.NewString(nic.ObjectMeta.Finalizers...)
+
+	// Del : 包含指定 Finalizer，并且 DeletionTimestamp 不为 0 或者 nil
+	if nicFinlizers.Has(DeviceFinalizer) && !nic.ObjectMeta.DeletionTimestamp.IsZero() {
+		// TODO: 其他Del逻辑
+
+		nicFinlizers.Delete(DeviceFinalizer)
+		nic.ObjectMeta.Finalizers = nicFinlizers.List()
+		if _, err := c.deviceClient.DeviceV1beta1().Nics().Update(nic); err != nil {
+			klog.Infof("Delete fianlizer fail：%s...", err.Error())
+			return err
+		}
+		return nil
+	}
+
+	// ADD : 新创建的Obj没有对应 Finalizer
+	if !nicFinlizers.Has(DeviceFinalizer) {
+		nic.ObjectMeta.Finalizers = append(nic.ObjectMeta.Finalizers, DeviceFinalizer)
+		if _, err := c.deviceClient.DeviceV1beta1().Nics().Update(nic); err != nil {
+			klog.Infof("Add fianlizer hook fail：%s...", err.Error())
+			return err
+		}
+
+		// TODO: 其他ADD逻辑
+	}
+
+	// Update
+	// TODO: 更新逻辑，更新应该是幂等的
+	klog.Infof("Reconcile %s OK...", key)
 	return nil
 }
